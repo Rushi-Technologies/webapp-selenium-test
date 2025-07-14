@@ -1,8 +1,12 @@
 pipeline {
     agent any
 
+    parameters {
+        string(name: 'TEST_URL', defaultValue: 'https://example.com', description: 'URL to test')
+    }
+
     environment {
-        TEST_URL = "https://example.com"
+        TEST_URL = "${params.TEST_URL}"
     }
 
     tools {
@@ -17,7 +21,7 @@ pipeline {
             }
         }
 
-        stage('Build & Test') {
+        stage('Run Tests') {
             steps {
                 sh 'mvn clean test -DTEST_URL=$TEST_URL'
             }
@@ -31,11 +35,11 @@ pipeline {
         }
 
         failure {
-            echo '❌ Build failed. One or more tests did not pass.'
+            echo "❌ Test failed for $TEST_URL"
         }
 
         success {
-            echo '✅ Build succeeded. All tests passed.'
+            echo "✅ Test passed for $TEST_URL"
         }
     }
 }

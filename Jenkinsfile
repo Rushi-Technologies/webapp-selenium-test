@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'TEST_URL', defaultValue: 'https://example.com', description: 'URL to test')
+        string(name: 'TEST_URL', defaultValue: 'http://13.56.184.225:8080/student-reg-webapp/', description: 'URL to test')
     }
 
     environment {
@@ -11,35 +11,37 @@ pipeline {
 
     tools {
         maven 'Maven-3.9.10'
-        jdk 'JDK-11'
     }
 
     stages {
+    
+
+
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/your-org/java-selenium-url-test.git', branch: 'main'
+                git url: 'https://github.com/Rushi-Technologies/webapp-selenium-test.git', branch: 'main'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'mvn clean test -DTEST_URL=$TEST_URL'
+                sh  "echo App URLL ${TEST_URL}"
+                sh "mvn clean test -DTEST_URL=${TEST_URL}"
             }
         }
     }
 
     post {
         always {
-            junit '**/target/surefire-reports/*.xml'
             cleanWs()
         }
 
         failure {
-            echo "❌ Test failed for $TEST_URL"
+            echo "Test failed for $TEST_URL"
         }
 
         success {
-            echo "✅ Test passed for $TEST_URL"
+            echo "Test passed for $TEST_URL"
         }
     }
 }

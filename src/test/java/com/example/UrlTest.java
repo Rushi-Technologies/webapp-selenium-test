@@ -31,9 +31,9 @@ public class UrlTest {
         driver.get(testUrl);
         String title = driver.getTitle();
         System.out.println("✅ Page title is: " + title);
-        assertTrue("Page title should contain 'Example Domain'", title.contains("Rushi Tech - Course Registration"));
+        assertTrue("Page title should contain 'Rushi Tech - Course Registration'", title.contains("Rushi Tech - Course Registration"));
     }
-
+ 
     @Test
     public void testHttpStatusIs200() throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(testUrl).openConnection();
